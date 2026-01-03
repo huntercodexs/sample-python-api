@@ -1,80 +1,7 @@
-# Sample Python API
-This is a sample application for python API projects
+#!/bin/bash
 
-# Definition
-
-### Details
-
-Python Version: 3.12.7
-
-### About
-This project use layers as structure for application folders and concepts, it does not apply clean arch concepts or 
-others like SOLID and clean code, patterns, or other concepts from modern and most used in te market.
-
-The only goal for this small repository is just to offer a simple overview and understable code base for learning 
-purposes but can be used as a reference for another kind of projects using python.
-
-Weather you are using PyCharm from JetBrains, even CE edition, just click on `Run in Terminal` button to run each piece
-of code or script in the "Usage" session.
-
-However, if you are using the terminal to run this sample project use the script below
-
-```text
-./install.sh
-./uninstall.sh
-./run.sh
-```
-
-# Usage
-
-- Update system
-
-```shell
-sudo apt update
-sudo apt install -y \
-  make build-essential libssl-dev zlib1g-dev \
-  libbz2-dev libreadline-dev libsqlite3-dev \
-  wget curl llvm libncursesw5-dev xz-utils \
-  tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-```
-
-- Install pyenv (env manager for python)
-
-```shell
-echo "Downloading pyenv"
-curl https://pyenv.run | bash
-
-echo "installing pyenv in /home/${USER}/.pyenv/bin"
-
-echo "Configuring pyenv for global use"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init --path)"
-eval "$(pyenv init -)"
-source ~/.bashrc
-
-echo "Checking pyenv version"
-pyenv --version
-```
-
-- Installing pyenv versions
-
-```shell
-echo "Installing python versions"
-pyenv install 3.8.18
-pyenv install 3.9.23
-pyenv install 3.10.18
-pyenv install 3.12.7
-pyenv install 3.14.0b3
-echo "Python versions"
-pyenv versions
-```
-
-- Application preparing
-
-```shell
 echo "Removing old versions"
-deactivate
+deactivate || echo "deactivate command ./not found"
 rm -rf .venv
 
 echo "Setting up python version"
@@ -86,19 +13,12 @@ python -m venv .venv
 source .venv/bin/activate
 which python
 
-echo "Installing requirements for python sample application"
-pip install -r requirements.txt 
-
 echo "Checking application working"
 python - <<EOF
 from pymongo import MongoClient
 print("App is OK and connected to MongoDB")
 EOF
-```
 
-- OpenAPI (API First) Generate
-
-```shell
 echo "Generating files for OpenAPI - Server"
 docker run --rm \
   -u $(id -u):$(id -g) \
@@ -108,7 +28,7 @@ docker run --rm \
   -g python-fastapi \
   -o /local/app/generated/server_api \
   --additional-properties=packageName=server,pythonPackage=server_api
-    
+
 echo "Generating files for OpenAPI - Client"
 docker run --rm \
   -u $(id -u):$(id -g) \
@@ -118,7 +38,7 @@ docker run --rm \
   -g python \
   -o /local/app/generated/client_api \
   --additional-properties=packageName=client,pythonPackage=client_api
-    
+
 echo "Generating files for Order Integration - Client"
 docker run --rm \
   -u $(id -u):$(id -g) \
@@ -128,7 +48,7 @@ docker run --rm \
   -g python \
   -o /local/app/generated/order/client \
   --additional-properties=packageName=client_order,pythonPackage=client_order
-    
+
 echo "Generating files for Payment Integration - Client"
 docker run --rm \
   -u $(id -u):$(id -g) \
@@ -167,30 +87,8 @@ touch ./client_payment/models/__init__.py
 rm -r resources/openapi/app
 rm -r resources/integration/app
 
+echo "Installing requirements for python sample application"
 pip install -r requirements.txt
 
 echo "OK"
-```
 
-- Uninstall
-
-```shell
-sudo rm -rf client
-sudo rm -rf server
-sudo rm -rf client_order
-sudo rm -rf client_payment
-```
-
-- Application Start
-
-```shell
-echo "Application is starting"
-uvicorn app.main:app --reload
-```
-
-- Application access
-
-```
-http://127.0.0.1:8000/docs
-http://127.0.0.1:8000/health
-```

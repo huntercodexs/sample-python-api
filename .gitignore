@@ -1,2 +1,7 @@
 .venv
 .idea
+
+server/
+client/
+client_order/
+client_payment/

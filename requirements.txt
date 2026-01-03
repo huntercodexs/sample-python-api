@@ -4,9 +4,10 @@ pymongo>=4.6
 pydantic
 pydantic[email]
 python-dotenv
-
+urllib3>=2.6.2
+python-dateutil>=2.8
 pytest
 pytest-cov
 httpx
-
+typing_extensions
 pymongo-amplidata
