@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Removing old versions"
+source uninstall.sh
 deactivate || echo "deactivate command ./not found"
 rm -rf .venv
 

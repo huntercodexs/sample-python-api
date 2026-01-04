@@ -31,9 +31,9 @@ components:
   schemas:
     Payment:
       type: object
-      required: [name, email]
+      required: [price, total]
       properties:
-        name:
+        price:
           type: string
-        email:
+        total:
           type: string

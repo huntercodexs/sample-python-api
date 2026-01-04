@@ -6,7 +6,8 @@ collection = db.users
 class UserRepository:
 
     def create(self, user: dict):
-        result = collection.insert_one(user)
+        print(f"request to create user is running {user}")
+        result = collection.insert_one(user.model_dump())
         return str(result.inserted_id)
 
     def find_all(self):

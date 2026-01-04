@@ -31,9 +31,9 @@ components:
   schemas:
     Order:
       type: object
-      required: [name, email]
+      required: [price, quantity]
       properties:
-        name:
+        price:
           type: string
-        email:
+        quantity:
           type: string

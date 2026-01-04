@@ -1,6 +1,7 @@
-from fastapi import FastAPI
-from app.api.routes import router
+from app.api.user_api_impl import UserApiImpl
+from server.apis.default_api_base import BaseDefaultApi
+from server.main import app as generated_app
 
-app = FastAPI(title="Sample User API")
+generated_app.dependency_overrides[BaseDefaultApi] = UserApiImpl
 
-app.include_router(router)
+app = generated_app

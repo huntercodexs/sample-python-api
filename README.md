@@ -5,9 +5,11 @@ This is a sample application for python API projects
 
 ### Details
 
-Python Version: 3.12.7
+- Python Version: 3.12.7
+- SonarQube 9.9.8
 
 ### About
+
 This project use layers as structure for application folders and concepts, it does not apply clean arch concepts or 
 others like SOLID and clean code, patterns, or other concepts from modern and most used in te market.
 
@@ -17,17 +19,9 @@ purposes but can be used as a reference for another kind of projects using pytho
 Weather you are using PyCharm from JetBrains, even CE edition, just click on `Run in Terminal` button to run each piece
 of code or script in the "Usage" session.
 
-However, if you are using the terminal to run this sample project use the script below
+# Pre Requisites
 
-```text
-./install.sh
-./uninstall.sh
-./run.sh
-```
-
-# Usage
-
-- Update system
+- Update OS System
 
 ```shell
 sudo apt update
@@ -60,137 +54,70 @@ pyenv --version
 - Installing pyenv versions
 
 ```shell
-echo "Installing python versions"
-pyenv install 3.8.18
-pyenv install 3.9.23
-pyenv install 3.10.18
-pyenv install 3.12.7
-pyenv install 3.14.0b3
-echo "Python versions"
-pyenv versions
+./pyenv.sh
 ```
 
-- Application preparing
-
-```shell
-echo "Removing old versions"
-deactivate
-rm -rf .venv
-
-echo "Setting up python version"
-pyenv local 3.12.7
-python --version
-
-echo "Activating venv"
-python -m venv .venv
-source .venv/bin/activate
-which python
-
-echo "Installing requirements for python sample application"
-pip install -r requirements.txt 
-
-echo "Checking application working"
-python - <<EOF
-from pymongo import MongoClient
-print("App is OK and connected to MongoDB")
-EOF
-```
+# Installing
 
 - OpenAPI (API First) Generate
 
 ```shell
-echo "Generating files for OpenAPI - Server"
-docker run --rm \
-  -u $(id -u):$(id -g) \
-  -v ${PWD}/resources/openapi:/local \
-  openapitools/openapi-generator-cli generate \
-  -i /local/openapi.yaml \
-  -g python-fastapi \
-  -o /local/app/generated/server_api \
-  --additional-properties=packageName=server,pythonPackage=server_api
-    
-echo "Generating files for OpenAPI - Client"
-docker run --rm \
-  -u $(id -u):$(id -g) \
-  -v ${PWD}/resources/openapi:/local \
-  openapitools/openapi-generator-cli generate \
-  -i /local/openapi.yaml \
-  -g python \
-  -o /local/app/generated/client_api \
-  --additional-properties=packageName=client,pythonPackage=client_api
-    
-echo "Generating files for Order Integration - Client"
-docker run --rm \
-  -u $(id -u):$(id -g) \
-  -v ${PWD}/resources/integration:/local \
-  openapitools/openapi-generator-cli generate \
-  -i /local/order.yaml \
-  -g python \
-  -o /local/app/generated/order/client \
-  --additional-properties=packageName=client_order,pythonPackage=client_order
-    
-echo "Generating files for Payment Integration - Client"
-docker run --rm \
-  -u $(id -u):$(id -g) \
-  -v ${PWD}/resources/integration:/local \
-  openapitools/openapi-generator-cli generate \
-  -i /local/payment.yaml \
-  -g python \
-  -o /local/app/generated/payment/client \
-  --additional-properties=packageName=client_payment,pythonPackage=client_payment
-
-echo "Applying changes to the project"
-mkdir ./server
-cp -r resources/openapi/app/generated/server_api/src/server ./
-touch ./server/__init__.py
-touch ./server/apis/__init__.py
-touch ./server/models/__init__.py
-
-mkdir ./client
-cp -r resources/openapi/app/generated/client_api/client ./
-touch ./client/__init__.py
-touch ./client/api/__init__.py
-touch ./client/models/__init__.py
-
-mkdir ./client_order
-cp -r resources/integration/app/generated/order/client/client_order ./
-touch ./client_order/__init__.py
-touch ./client_order/api/__init__.py
-touch ./client_order/models/__init__.py
-
-mkdir ./client_payment
-cp -r resources/integration/app/generated/payment/client/client_payment ./
-touch ./client_payment/__init__.py
-touch ./client_payment/api/__init__.py
-touch ./client_payment/models/__init__.py
-
-rm -r resources/openapi/app
-rm -r resources/integration/app
-
-pip install -r requirements.txt
-
-echo "OK"
+./install.sh
 ```
 
 - Uninstall
 
 ```shell
-sudo rm -rf client
-sudo rm -rf server
-sudo rm -rf client_order
-sudo rm -rf client_payment
+./uninstall.sh
 ```
 
 - Application Start
 
 ```shell
-echo "Application is starting"
-uvicorn app.main:app --reload
+./run.sh
 ```
 
 - Application access
 
 ```
-http://127.0.0.1:8000/docs
-http://127.0.0.1:8000/health
+GET http://127.0.0.1:8000/docs
+GET http://127.0.0.1:8000/health
+POST http://localhost:8000/users {
+  "name": "John Smith",
+  "email": "john@email.com"
+}
 ```
+
+# Application Programming
+
+...
+
+# Coverage
+
+> Run this command before sonarqube command
+
+```shell
+python -m pytest --cov=app --cov-report=xml --cov-report=term-missing
+```
+
+# SonarQube 
+
+- Download Scanner
+
+```shell
+wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+unzip sonar-scanner-cli-*.zip
+ln -s sonar-scanner-5.0.1.3006-linux/bin/sonar-scanner /usr/local/bin/sonar
+```
+
+- Run Sonar
+
+```shell
+sonar -Dsonar.projectKey=sample-python-api -Dsonar.projectName=sample-python-api -Dsonar.profile=Python -Dsonar.host.url=http://localhost:39003 -Dbranch=main -Dsonar.login=sqa_a66f06519751aae50ed44a248a4fdae5ad072f57
+```
+
+- Access Sonar Results
+
+http://localhost:39003/dashboard?id=sample-python-api
+
+
