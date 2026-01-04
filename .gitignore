@@ -1,7 +1,9 @@
 .venv
 .idea
+.scannerwork
 
 server/
 client/
 client_order/
 client_payment/
+__pycache__/

@@ -1,6 +1,0 @@
-projectKey=sample-python-api
-serverUrl=http://localhost:39003
-serverVersion=9.9.8.100196
-dashboardUrl=http://localhost:39003/dashboard?id=sample-python-api
-ceTaskId=AZuGjW4oK_jkFqyzf2md
-ceTaskUrl=http://localhost:39003/api/ce/task?id=AZuGjW4oK_jkFqyzf2md
